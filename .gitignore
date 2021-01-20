@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# stuff
+envvars.sh
+zappa_settings*.toml
