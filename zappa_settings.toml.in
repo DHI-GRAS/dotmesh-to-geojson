@@ -1,0 +1,27 @@
+[development]
+app_function = "dotmeshgj.app.app"
+profile_name = "default"
+project_name = "dotmeshgj"
+runtime = "python3.6"
+s3_bucket = "zappa-dotmeshgj"
+timeout_seconds = 120
+memory_size = 3000
+exclude = [
+    "*.gz",
+    "*.rar",
+    "boto3*",
+    "awscli*",
+    "botocore*",
+    "s3transfer*",
+    "awscli*",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".eggs"
+]
+
+[production]
+extends = "development"
+
+debug = false
+log_level = "WARNING"
+xray_tracing = false
