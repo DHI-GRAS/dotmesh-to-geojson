@@ -131,3 +131,4 @@ dmypy.json
 # stuff
 envvars.sh
 zappa_settings*.toml
+_version.py
