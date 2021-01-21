@@ -18,10 +18,16 @@ def _parse_points(datalines):
     import numpy as np
 
     header = datalines[0]
+    crs = header.split()[3]
+    if crs.lower() not in ("long/lat", b"long/lat"):
+        raise ValueError(f"Mesh must be LONG/LAT. Got {crs}.")
     nrows = int(header.split()[2])
-    return np.genfromtxt(
+    data = np.genfromtxt(
         datalines, dtype=float, skip_header=1, usecols=[1, 2], max_rows=nrows
     )
+    if not np.isfinite(data).all():
+        raise ValueError("Parsed data contains NaN")
+    return data
 
 
 def _mesh_to_polygon(points):
@@ -56,7 +62,10 @@ def convert():
     if not len(datalines) > 1:
         return "Data was not a multi-line file", 400
 
-    points = _parse_points(datalines)
+    try:
+        points = _parse_points(datalines)
+    except ValueError as err:
+        return str(err), 400
     polygon = _mesh_to_polygon(points)
     if not polygon.is_valid:
         return "Unable to get valid polygon from this mesh", 400
